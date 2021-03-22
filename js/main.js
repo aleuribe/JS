@@ -43,6 +43,7 @@ alert("Ah bueno, es una dama.\n¿Cual es la edad aproximada");
     }else{
         alert("Hey, te dije que solo numeros, y deberian ser positivos (la edad no es negativa)!\nAhora sera Game Over para ti :(");
     }
+    
 
 //Pregunta 1 - Respuesta Otro
 }else if(sexoPersonaje=="otro"){
