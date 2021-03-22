@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafio 1 - Calculadora de Vida JS</title>
+</head>
+<body>
+    <h1>Por favor introduzca los datos correctos, y la calculadora le dara cuantos dias de vida lleva.</h1>
+	
+	<script>
+        //Definicion de variables
+        var anioNacimiento=prompt("Ingrese su anio de nacimiento:");
+        var mesNacimiento=prompt("Ingrese su mes de nacimiento:");
+        var diaNacimiento=prompt("Ingrese su dia de nacimiento:");
+        var nombreUsuario=prompt("Ingrese su Nombre:");
+
+        //Calculo de dias de vida
+        var diasVida=(2021-parseInt(anioNacimiento))*365 + (1-parseInt(mesNacimiento))*30 + parseInt(diaNacimiento);
+
+        //Definicion del mensaje al usuario
+        var mensaje=nombreUsuario + " usted nacio el anio " + anioNacimiento + " y tiene " + diasVida + " dias viviendo."
+
+        //Muestra en la consola y en alerta
+        console.log(mensaje);
+
+        alert(mensaje);
+    </script>
+</body>
+</html>
