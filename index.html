@@ -4,12 +4,98 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Desafio 2 - Alejandro Uribe</title>
-    <script src="js/main.js"></script> <!-- Importando el codigo de Javascript al index.html -->
+    <title>Calculadora de Costo Promedio en Dolares para Cripto Inversiones (ProDCI)</title>
+
+    <!-- Incluyendo bootstrap a la pagina -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+
 </head>
 <body>
-    <h1>¿Adivina Quien? v1.0</h1>
-    <h2>No garantizamos que las respuestas sean 100% correctas jejeje</h2>
     
+    <!-- Elementos opcionales de bootstrap, anadidos-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous">
+    </script>
+
+    <header>
+        <!--Aqui va la cabecera, todavia no esta definido-->
+    </header>
+
+    <main>
+        <!--Aqui va el contenido de la pagina-->
+        <H1>Calculadora de Costo Promedio en Dolares para Cripto Inversiones</H1>
+        <h2>DCI</h2>
+
+        <!--Contenedor para los elementos de la pagina-->
+        <div class="container">
+            <div class="row"> <!--Fila 1-->
+                <div class="col-sm">
+
+                    <!--1. Fecha Inicio de Inversion-->
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Fecha Inicio (DD/MM/YY)</span>
+                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                    </div>
+
+                    <!--2. Fecha Fin de Inversion-->
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Fecha Fin (DD/MM/YY)</span>
+                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                    </div>
+
+                    <!--3. Monto periodico en dolares-->
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Monto en Dolares</span>
+                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                    </div>
+
+                    <!--4. Periodo de tiempo (Semanal, Bi Semanal, Semi Mensual, Mensual, Lump Sum)-->
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="inputGroupSelect01">Periodo</label>
+                        <select class="form-select" id="inputGroupSelect01">
+                          <option selected>Seleccione un periodo de tiempo...</option>
+                          <option value="1">Semanal (dia 1 de la semana)</option>
+                          <option value="2">Bi Semanal (dia 1 cada 2 semanas)</option>
+                          <option value="3">Semi Mensual (1 y 15 de mes)</option>
+                          <option value="4">Mensual (1 de mes)</option>
+                          <option value="6">Lump Sum (1 vez en fecha inicio)</option>
+                        </select>
+                    </div>
+
+
+                    <!--5. Criptomoneda (Opciones BTC, ETH, ADA)-->
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="inputGroupSelect01">Criptomoneda</label>
+                        <select class="form-select" id="inputGroupSelect01">
+                          <option selected>Seleccione una opcion...</option>
+                          <option value="1">Bitcoin</option>
+                          <option value="2">Ethereum</option>
+                          <option value="3">Cardano</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row"> <!--Fila 2-->
+              <div class="col-sm">
+                Aqui se mostrara el ROI
+              </div>
+              <div class="col-sm">
+                Aqui se mostrara el valor total DCA
+              </div>
+              <div class="col-sm">
+                Aqui se mostrara cuanto Cripto se adquirio en ese periodo de tiempo
+              </div>
+              <div class="col-sm">
+                Aqui se mostrara cuanto USD se gasto
+              </div>
+            </div>
+          </div>
+    </main>
+
+
+    <script src="js/main.js"></script>
 </body>
 </html>
