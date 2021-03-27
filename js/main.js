@@ -196,16 +196,3 @@ function mostrarResultados(){
 pedirDatos();
 calcularInversion();
 mostrarResultados();
-
-console.log(preciosBTC);
-//console.log(week(prueba.getFullYear(),prueba.getMonth()+1,prueba.getDate()));
-
-//fechini=new Date("10/11/2019");
-//fechfin=new Date("10/10/2020")
-//DCABTC(100,"Semanal",fechini, fechfin);
-//alert(week(2019,12,31));
-
-// while(true){
-//     var prueba = new Date(prompt("Ingrese fecha: "));
-//     alert(calcularSemana(prueba));
-// }
