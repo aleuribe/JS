@@ -45,73 +45,61 @@ const buscarPrecio = (anioSemana) => {
     return precioFecha
 }
 
+//Definicion de los elementos del formulario
+const inputFormFechaInicio = document.getElementById('formFechaInicio')
+const inputFormFechaFin = document.getElementById('formFechaFin')
+const inputFormMontoUSD = document.getElementById('formMontoUSD')
+const inputFormPeriodo = document.getElementById('formPeriodo')
+const inputFormCripto = document.getElementById('formCripto')
+const inputFormCalcular = document.getElementById('formCalcularInversion')
+const inputFormReiniciar = document.getElementById('formReiniciarFormulario')
+const outputFormROI = document.getElementById('formOutputROI')
+const outputFormDCA = document.getElementById('formOutputDCA')
+const outputFormCripto = document.getElementById('formOutputCripto')
+const outputFormUSD = document.getElementById('formOutputUSD')
+
 //Definicion de funciones
+
+
 //Funcion de peticion de datos V2.0, que luego sera reemplazada por la data ingresada en el html
 function pedirDatos(){
     
     //Validacion basica de datos ingresados
     //Primero validamos la fecha inicio
-    while(true){
-        inversionUsuario.fechaInicio=new Date(prompt("Ingrese la fecha de inicio de la inversion con formato MM/DD/YY.\n\nNota: \nPara BTC > 07/18/2010.\nPara ETH > 03/16/2016.\nPara ADA > 12/31/2017."))
-        
-        if (isNaN(inversionUsuario.fechaInicio) || (inversionUsuario.fechaInicio < new Date ("07/18/2010"))){ //Si la fecha parseada no es o mayor a 18 de julio de 2010, sale del ciclo y continua
-            alert("Por favor ingrese una fecha correcta con formato MM/DD/YY")
-            
-            throw new Error(`Fecha ingresada ${inversionUsuario.fechaInicio} no es correcta.`)
-        }else{
-            break
-        }
+    if (isNaN(inversionUsuario.fechaInicio) || (inversionUsuario.fechaInicio < new Date ("07/18/2010"))){ //Si la fecha parseada no es o mayor a 18 de julio de 2010, sale del ciclo y continua
+        alert("Por favor ingrese una fecha inicio correcta con formato MM/DD/YY\n\nNota: \nPara BTC > 07/18/2010.\nPara ETH > 03/16/2016.\nPara ADA > 12/31/2017.")
+        throw new Error(`Fecha ingresada ${inversionUsuario.fechaInicio} no es correcta.`)
     }
-
+    
     //Segundo validamos la fecha fin
-    while(true){
-        inversionUsuario.fechaFin=new Date(prompt("Ingrese la fecha de inicio de la inversion con formato MM/DD/YY.\n\nNota: \nPara BTC > 07/18/2010.\nPara ETH > 03/16/2016.\nPara ADA > 12/31/2017."))
-        
-        if (isNaN(inversionUsuario.fechaFin) || (inversionUsuario.fechaFin < new Date ("07/18/2010"))){ //Si la fecha parseada no es NaN, sale del ciclo
-            alert("Por favor ingrese una fecha correcta con formato MM/DD/YY");
-            throw new Error(`Fecha ingresada ${inversionUsuario.fechaFin} no es correcta.`)
-        }else{
-            break
-        }
+          
+    if (isNaN(inversionUsuario.fechaFin) || (inversionUsuario.fechaFin < new Date ("07/18/2010"))){ //Si la fecha parseada no es NaN, sale del ciclo
+        alert("Por favor ingrese una fecha fin correcta con formato MM/DD/YY\n\nNota: \nPara BTC > 07/18/2010.\nPara ETH > 03/16/2016.\nPara ADA > 12/31/2017.");
+        throw new Error(`Fecha ingresada ${inversionUsuario.fechaFin} no es correcta.`)
     }
+    
     
     //Tercero validamos monto sea un numero positivo
-    while(true){
-        inversionUsuario.montoUSD=prompt("Ingrese el monto en dolares de la inversion periodica")
         
-        if (inversionUsuario.montoUSD>0){
-            break;
-        }else{
-            alert("Por favor ingrese un monto en dolares real")
-            throw new Error(`Monto ingresado ${inversionUsuario.montoUSD} no es correcto.`)
-        }
-        
+    if (isNaN(inversionUsuario.montoUSD) || inversionUsuario.montoUSD <=0){
+        alert("Por favor ingrese un monto en dolares real")
+        throw new Error(`Monto ingresado ${inversionUsuario.montoUSD} no es correcto.`)
     }
-    
+        
     //Cuarto validamos que periodo de tiempo este dentro de las opciones
     
-    while(true){
-        inversionUsuario.periodoTiempo=prompt("Ingrese el periodo de tiempo usado para la inversion. Opciones disponibles: Semanal, Bi Semanal, Mensual o Lump sum.\nNota: por lo pronto, la opcion lump sum no esta disponible");
-
-        if ((inversionUsuario.periodoTiempo==="Semanal") || (inversionUsuario.periodoTiempo==="Bi Semanal") || (inversionUsuario.periodoTiempo === "Mensual") || (inversionUsuario.periodoTiempo == "Lump sum") ) {
-            break;
-        }else{
-            alert("Por favor ingrese una de las opciones disponibles");
-        }
-        
+    if ((inversionUsuario.periodoTiempo!=="Semanal") || (inversionUsuario.periodoTiempo!=="Bi-Semanal") || (inversionUsuario.periodoTiempo !== "Mensual") || (inversionUsuario.periodoTiempo !== "Lump sum") ) {
+        alert("Por favor seleccione un periodo de tiempo");
+        throw new Error(`El periodo de tiempo ingresado ${inversionUsuario.periodoTiempo} no es correcto.`)
     }
-    
+   
     //Quinto, validamos que la criptomoneda este dentro de las opciones
     
-    while(true){
-        inversionUsuario.criptoOpcion=prompt("Ingrese la cripto que quiere usar para invertir. Opciones: BTC, ETH, ADA.");
-
-        if ((inversionUsuario.criptoOpcion==="BTC") || (inversionUsuario.criptoOpcion==="ETH") || (inversionUsuario.criptoOpcion==="ADA")){
-            break
-        }else{
-            alert("Por favor ingrese una de las opciones disponibles");
-        }
+    if ((inversionUsuario.criptoOpcion!="BTC") || (inversionUsuario.criptoOpcion!="ETH") || (inversionUsuario.criptoOpcion!="ADA")){
+            alert("Por favor seleccione una criptomoneda");
+            throw new Error(`La inversion seleccionada ${inversionUsuario.criptoOpcion} no es correcta.`)
     }
+    
 }
     
 //Funcion que nos ayuda a calcular la semana especifica de una fecha
@@ -236,17 +224,41 @@ function calcularInversion(fechainicial, fechafinal, monto, periodo, activo){
 
 //Esta funcion mostrara los resultados, en principio en la consola pero eventualmente para el HTML
 function mostrarResultados(fechaInicio, fechaFin, montoUSD, periodoTiempo, criptoOpcion, outputUSD, outputCriptoDCA, outputDCAHoy){
+    let ROI = (outputDCAHoy/outputUSD) * 100
+
+    outputFormROI.innerHTML = `${ROI.toFixed(2)} %`
+    outputFormDCA.innerHTML = `${outputDCAHoy.toFixed(2)} $`
+    outputFormCripto.innerHTML = `${outputCriptoDCA.toFixed(2)} ${criptoOpcion}`
+    outputFormUSD.innerHTML = `${outputUSD.toFixed(2)} $`
+   
+    
+    /*
     alert("De haber invertido en " + criptoOpcion + " a partir de " + fechaInicio + " hasta " + fechaFin + " un monto de " + montoUSD + " de forma " + periodoTiempo + "\nUsted contaria con los siguientes montos:");
 
     alert("Total de USD invertidos: " + outputUSD);
     alert("Usted contaria a dia de hoy con " + outputCriptoDCA + " " + criptoOpcion);
     alert("Representando un monto en Dolares a dia de hoy de: " + outputDCAHoy + " dolares.");
-
+*/
 }
 
+//Al hacer click en Calcular inversion
+inputFormCalcular.addEventListener('click', (event) => {
+
+    inversionUsuario.fechaInicio=new Date(inputFormFechaInicio.value)
+    inversionUsuario.fechaFin=new Date(inputFormFechaFin.value)
+    inversionUsuario.montoUSD=inputFormMontoUSD.value
+    inversionUsuario.periodoTiempo=inputFormPeriodo.value
+    inversionUsuario.criptoOpcion=inputFormCripto.value
+
+    pedirDatos() //Para validar que los datos estan en el formulario y son correctos
+
+    calcularInversion(inversionUsuario.fechaInicio,inversionUsuario.fechaFin,inversionUsuario.montoUSD,inversionUsuario.periodoTiempo,inversionUsuario.criptoOpcion)
+
+})
+
 //Main
-pedirDatos();
-calcularInversion(inversionUsuario.fechaInicio,inversionUsuario.fechaFin,inversionUsuario.montoUSD,inversionUsuario.periodoTiempo,inversionUsuario.criptoOpcion);
+//pedirDatos();
+//calcularInversion(inversionUsuario.fechaInicio,inversionUsuario.fechaFin,inversionUsuario.montoUSD,inversionUsuario.periodoTiempo,inversionUsuario.criptoOpcion);
 
 /* Testing purposes:
 console.log(buscarPrecio('201753'))
