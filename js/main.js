@@ -61,7 +61,7 @@ const outputFormUSD = document.getElementById('formOutputUSD')
 //Definicion de funciones
 
 
-//Funcion de peticion de datos V2.0, que luego sera reemplazada por la data ingresada en el html
+//Funcion de validacion de datos en el formulario
 function pedirDatos(){
     
     //Validacion basica de datos ingresados
@@ -88,16 +88,21 @@ function pedirDatos(){
         
     //Cuarto validamos que periodo de tiempo este dentro de las opciones
     
-    if ((inversionUsuario.periodoTiempo!=="Semanal") || (inversionUsuario.periodoTiempo!=="Bi-Semanal") || (inversionUsuario.periodoTiempo !== "Mensual") || (inversionUsuario.periodoTiempo !== "Lump sum") ) {
+    if ((inversionUsuario.periodoTiempo==="Semanal") || (inversionUsuario.periodoTiempo==="Bi-Semanal") || (inversionUsuario.periodoTiempo==="Mensual") || (inversionUsuario.periodoTiempo==="Lump Sum") ) {
+    
+    } else {
         alert("Por favor seleccione un periodo de tiempo");
+        alert(inversionUsuario.periodoTiempo)
         throw new Error(`El periodo de tiempo ingresado ${inversionUsuario.periodoTiempo} no es correcto.`)
     }
    
     //Quinto, validamos que la criptomoneda este dentro de las opciones
     
-    if ((inversionUsuario.criptoOpcion!="BTC") || (inversionUsuario.criptoOpcion!="ETH") || (inversionUsuario.criptoOpcion!="ADA")){
-            alert("Por favor seleccione una criptomoneda");
-            throw new Error(`La inversion seleccionada ${inversionUsuario.criptoOpcion} no es correcta.`)
+    if ((inversionUsuario.criptoOpcion==="BTC") || (inversionUsuario.criptoOpcion==="ETH") || (inversionUsuario.criptoOpcion==="ADA")){
+    
+    } else {
+        alert("Por favor seleccione una criptomoneda");
+        throw new Error(`La inversion seleccionada ${inversionUsuario.criptoOpcion} no es correcta.`)
     }
     
 }
@@ -148,7 +153,6 @@ function consultaPrecioActivo(fecha, activo){
     }
 }
 
-
 //Esta funcion va a calcular el DCA hasta hoy segun el monto de inversion, periodo de tiempo y fecha de inicio
 function calcularInversion(fechainicial, fechafinal, monto, periodo, activo){
     let fechaActual=new Date(fechainicial)
@@ -170,7 +174,7 @@ function calcularInversion(fechainicial, fechafinal, monto, periodo, activo){
                 }
             }
             break;
-        case "Bi Semanal": //Si el DCA es bi semanal
+        case "Bi-Semanal": //Si el DCA es bi semanal
             while(fechaActual<fechafinal){ //Mientras la fecha de recorrida sea menor a la fecha de hoy, sigue recorriendo los arrays
                 
                 valorDCACripto=valorDCACripto+(parseFloat(monto)/consultaPrecioActivo(fechaActual,activo)) //Suma el valor de BTC para calcularlo en el DCA
@@ -197,7 +201,7 @@ function calcularInversion(fechainicial, fechafinal, monto, periodo, activo){
             
             }
             break
-        case "Lump sum": //Si el DCA es lumpsum
+        case "Lump Sum": //Si el DCA es lumpsum
             alert("Lumpsum todavia en desarrollo")
             break
         }
@@ -231,14 +235,6 @@ function mostrarResultados(fechaInicio, fechaFin, montoUSD, periodoTiempo, cript
     outputFormCripto.innerHTML = `${outputCriptoDCA.toFixed(2)} ${criptoOpcion}`
     outputFormUSD.innerHTML = `${outputUSD.toFixed(2)} $`
    
-    
-    /*
-    alert("De haber invertido en " + criptoOpcion + " a partir de " + fechaInicio + " hasta " + fechaFin + " un monto de " + montoUSD + " de forma " + periodoTiempo + "\nUsted contaria con los siguientes montos:");
-
-    alert("Total de USD invertidos: " + outputUSD);
-    alert("Usted contaria a dia de hoy con " + outputCriptoDCA + " " + criptoOpcion);
-    alert("Representando un monto en Dolares a dia de hoy de: " + outputDCAHoy + " dolares.");
-*/
 }
 
 //Al hacer click en Calcular inversion
@@ -255,15 +251,3 @@ inputFormCalcular.addEventListener('click', (event) => {
     calcularInversion(inversionUsuario.fechaInicio,inversionUsuario.fechaFin,inversionUsuario.montoUSD,inversionUsuario.periodoTiempo,inversionUsuario.criptoOpcion)
 
 })
-
-//Main
-//pedirDatos();
-//calcularInversion(inversionUsuario.fechaInicio,inversionUsuario.fechaFin,inversionUsuario.montoUSD,inversionUsuario.periodoTiempo,inversionUsuario.criptoOpcion);
-
-/* Testing purposes:
-console.log(buscarPrecio('201753'))
-
-console.log(consultaPrecioActivo(new Date("12/31/2017"),"ADA"))
-
-throw new Error(`Fecha ingresada ${fechaInicio} no es correcta.`)
-*/
