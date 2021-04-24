@@ -238,8 +238,7 @@ function mostrarResultados(fechaInicio, fechaFin, montoUSD, periodoTiempo, cript
 }
 
 //Al hacer click en Calcular inversion
-inputFormCalcular.addEventListener('click', (event) => {
-
+inputFormCalcular.onclick = () => {
     inversionUsuario.fechaInicio=new Date(inputFormFechaInicio.value)
     inversionUsuario.fechaFin=new Date(inputFormFechaFin.value)
     inversionUsuario.montoUSD=inputFormMontoUSD.value
@@ -249,5 +248,14 @@ inputFormCalcular.addEventListener('click', (event) => {
     pedirDatos() //Para validar que los datos estan en el formulario y son correctos
 
     calcularInversion(inversionUsuario.fechaInicio,inversionUsuario.fechaFin,inversionUsuario.montoUSD,inversionUsuario.periodoTiempo,inversionUsuario.criptoOpcion)
+}
 
-})
+//Limpiar formulario
+inputFormReiniciar.onclick = () => {
+    inputFormFechaInicio.value=""
+    inputFormFechaFin.value=""
+    inputFormMontoUSD.value=""
+    inputFormPeriodo.value=inputFormPeriodo.firstElementChild.value
+    inputFormCripto.value=inputFormCripto.firstElementChild.value
+
+}
