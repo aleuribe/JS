@@ -92,7 +92,6 @@ function pedirDatos(){
     
     } else {
         alert("Por favor seleccione un periodo de tiempo");
-        alert(inversionUsuario.periodoTiempo)
         throw new Error(`El periodo de tiempo ingresado ${inversionUsuario.periodoTiempo} no es correcto.`)
     }
    
@@ -257,5 +256,4 @@ inputFormReiniciar.onclick = () => {
     inputFormMontoUSD.value=""
     inputFormPeriodo.value=inputFormPeriodo.firstElementChild.value
     inputFormCripto.value=inputFormCripto.firstElementChild.value
-
 }
