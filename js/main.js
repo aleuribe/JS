@@ -257,5 +257,4 @@ inputFormReiniciar.onclick = () => {
     inputFormMontoUSD.value=""
     inputFormPeriodo.value=inputFormPeriodo.firstElementChild.value
     inputFormCripto.value=inputFormCripto.firstElementChild.value
-
 }
