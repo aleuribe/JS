@@ -235,6 +235,17 @@ function mostrarResultados(fechaInicio, fechaFin, montoUSD, periodoTiempo, cript
     outputFormCripto.innerHTML = `${outputCriptoDCA.toFixed(2)} ${criptoOpcion}`
     outputFormUSD.innerHTML = `${outputUSD.toFixed(2)} $`
    
+    //Guarda los ultimos resultados en el localstorage
+    const historicoInversion = {
+        inicio:fechaInicio,
+        fin:fechaFin,
+        monto:montoUSD,
+        periodo:periodoTiempo,
+        moneda:criptoOpcion,
+        cripto:outputCriptoDCA,
+        dca:outputDCAHoy
+    }
+    localStorage.setItem(Date.now(), JSON.stringify(historicoInversion))
 }
 
 //Al hacer click en Calcular inversion
@@ -257,4 +268,33 @@ inputFormReiniciar.onclick = () => {
     inputFormMontoUSD.value=""
     inputFormPeriodo.value=inputFormPeriodo.firstElementChild.value
     inputFormCripto.value=inputFormCripto.firstElementChild.value
+}
+
+//Cargamos el historico de calculos de inversion solo si tiene algun registro historico luego de cada carga de pagina
+if(localStorage.length>0) {
+    for (let i=0; i<localStorage.length;i++ ){
+        let clave = localStorage.key(i)
+        let historial = JSON.parse(localStorage.getItem(clave))
+        let fechaHistorialInicio = (historial.inicio+"").substr(0,10)
+        let fechaHistorialFin = (historial.fin+"").substr(0,10)
+        let dcaHistorial = historial.dca+0
+
+        $('#calculoHistorico').append(`
+        <div id="calculoHistorico" class="alert alert-primary d-flex align-items-center" role="alert">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24"><use xlink:href="#info-fill"/></svg>
+                <div>
+                  Invirtiendo ${historial.monto} USD de forma ${historial.periodo} en ${historial.moneda} desde ${fechaHistorialInicio} hasta ${fechaHistorialFin} habrias tenido un beneficio de ${dcaHistorial.toFixed(2)} dolares.
+                </div>
+            </div>`)
+
+    }
+    
+}else{
+    $('#calculoHistorico').append(`
+    <div id="calculoHistorico" class="alert alert-warning d-flex align-items-center" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24"><use xlink:href="#exclamation-triangle-fill"/></svg>
+            <div>
+              No hay calculos historicos realizados. Por favor, realiza un calculo de inversion y cuando vuelvas a cargar la pagina, apareceran aqui.
+            </div>
+        </div>`)
 }
