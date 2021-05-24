@@ -10,6 +10,10 @@ const inversionUsuario = { //Objeto con la data de la inversion que desea calcul
     criptoOpcion: ''
 }
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
 //Definicion de los elementos del formulario
 const inputFormFechaInicio = document.getElementById('formFechaInicio')
 const inputFormFechaFin = document.getElementById('formFechaFin')
@@ -27,11 +31,13 @@ const outputFormUSD = document.getElementById('formOutputUSD')
 
 //Funcion mejorada de busqueda de precios (utilizando API y AJAX con jQuery)
 function buscarPrecio(fecha, activo) {
-    console.log('Consultando API para '+fecha + " y " + activo)
+    
     let horaUnix=fecha.getTime().toString().substr(0,10)
     let URLFinal = URL + activo + "&ts="+ horaUnix
     let precio = 0
     
+    console.log('Consultando API para '+fecha + " y " + activo + " en hora unix " + horaUnix)
+
     //Configuramos el modo asincrono de ajax porque la API tiene tiempos de respuesta muy lentos
     $.ajaxSetup({
         async:false
@@ -39,17 +45,23 @@ function buscarPrecio(fecha, activo) {
 
     $.get(URLFinal,(response,status) => {
         if(status === 'success') {
-            if(activo=='BTC'){
-                console.log(response.BTC.USD)
-                precio=response.BTC.USD
-            }
-            if(activo=='ETH'){
-                console.log(response.ETH.USD)
-                precio=response.ETH.USD
-            }
-            if(activo=='ADA'){
-                console.log(response.ADA.USD)
-                precio=response.ADA.USD
+            try {
+
+                if(activo=='BTC'){
+                    console.log(response.BTC.USD)
+                    precio=response.BTC.USD
+                }
+                if(activo=='ETH'){
+                    console.log(response.ETH.USD)
+                    precio=response.ETH.USD
+                }
+                if(activo=='ADA'){
+                    console.log(response.ADA.USD)
+                    precio=response.ADA.USD
+                }
+            } catch (error) {
+                alert("Disculpe, hubo problemas de conexion con el API. Por favor reintente")
+                throw new Error(response)
             }
         }
     })
@@ -102,7 +114,6 @@ function pedirDatos(){
     
 }
 
-
 //Funcion que retorna el precio de BTC en una fecha en especifico
 function consultaPrecioActivo(fecha, activo){    
     if(activo=="BTC") {
@@ -132,11 +143,15 @@ function consultaPrecioActivo(fecha, activo){
 }
 
 //Esta funcion va a calcular el DCA hasta hoy segun el monto de inversion, periodo de tiempo y fecha de inicio
-function calcularInversion(fechainicial, fechafinal, monto, periodo, activo){
+async function calcularInversion(fechainicial, fechafinal, monto, periodo, activo){
     let fechaActual=new Date(fechainicial)
     let valorDCACripto=0
     let valorDCAUSD=0
     let outputDCAHoy=0
+
+    $("body").addClass("loading");
+    console.log("loading.....")
+    await sleep(200)
 
     switch(periodo){
         case "Semanal": //Si el DCA es semanal
@@ -179,9 +194,13 @@ function calcularInversion(fechainicial, fechafinal, monto, periodo, activo){
             }
             break
         }
+        
         outputDCAHoy=valorDCACripto*consultaPrecioActivo(new Date(),activo)
     
     //Mostrar resultados
+    await sleep(200)
+    console.log("quitando loading")
+    $("body").removeClass("loading");
     mostrarResultados(fechainicial, fechafinal, monto, periodo, activo, valorDCAUSD, valorDCACripto, outputDCAHoy)
 }
 
@@ -191,7 +210,7 @@ function mostrarResultados(fechaInicio, fechaFin, montoUSD, periodoTiempo, cript
 
     outputFormROI.innerHTML = `${ROI.toFixed(2)} %`
     outputFormDCA.innerHTML = `${outputDCAHoy.toFixed(2)} $`
-    outputFormCripto.innerHTML = `${outputCriptoDCA.toFixed(2)} ${criptoOpcion}`
+    outputFormCripto.innerHTML = `${outputCriptoDCA.toFixed(4)} ${criptoOpcion}`
     outputFormUSD.innerHTML = `${outputUSD.toFixed(2)} $`
    
     //Guarda los ultimos resultados en el localstorage
