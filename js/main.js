@@ -1,8 +1,6 @@
-//Version 3.0 de la Calculadora de Costo Promedio en Dolares para Cripto Inversiones
-//En esta version utilizamos una API de cryptocompare para traernos la data de precios de los activos
 const URL = "https://min-api.cryptocompare.com/data/pricehistorical?tsyms=USD&fsym="
 
-const inversionUsuario = { //Objeto con la data de la inversion que desea calcular el usuario
+const inversionUsuario = {
     fechaInicio: '',
     fechaFin: '',
     montoUSD: '',
@@ -14,7 +12,6 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-//Definicion de los elementos del formulario
 const inputFormFechaInicio = document.getElementById('formFechaInicio')
 const inputFormFechaFin = document.getElementById('formFechaFin')
 const inputFormMontoUSD = document.getElementById('formMontoUSD')
@@ -27,9 +24,6 @@ const outputFormDCA = document.getElementById('formOutputDCA')
 const outputFormCripto = document.getElementById('formOutputCripto')
 const outputFormUSD = document.getElementById('formOutputUSD')
 
-//Definicion de funciones
-
-//Funcion mejorada de busqueda de precios (utilizando API y AJAX con jQuery)
 function buscarPrecio(fecha, activo) {
     
     let horaUnix=fecha.getTime().toString().substr(0,10)
@@ -73,11 +67,8 @@ function buscarPrecio(fecha, activo) {
     return precio;
 }
 
-//Funcion de validacion de datos en el formulario
 function pedirDatos(){
-    
-    //Validacion basica de datos ingresados
-    //Primero validamos la fecha inicio
+
     if (isNaN(inversionUsuario.fechaInicio) || (inversionUsuario.fechaInicio < new Date ("07/18/2010")) || (inversionUsuario.fechaInicio > new Date())){ //Si la fecha parseada no es o mayor a 18 de julio de 2010, sale del ciclo y continua
         Swal.fire({
             icon:'error',
@@ -87,8 +78,6 @@ function pedirDatos(){
         
         throw new Error(`Fecha inicio ingresada ${inversionUsuario.fechaInicio} no es correcta.`)
     }
-    
-    //Segundo validamos la fecha fin
           
     if (isNaN(inversionUsuario.fechaFin) || (inversionUsuario.fechaFin < new Date ("07/18/2010")) || (inversionUsuario.fechaInicio > new Date())){ //Si la fecha parseada no es NaN, sale del ciclo
         Swal.fire({
@@ -98,9 +87,6 @@ function pedirDatos(){
         })
         throw new Error(`Fecha fin ingresada ${inversionUsuario.fechaFin} no es correcta.`)
     }
-    
-    
-    //Tercero validamos monto sea un numero positivo
         
     if (isNaN(inversionUsuario.montoUSD) || inversionUsuario.montoUSD <=0){
         Swal.fire({
@@ -110,8 +96,6 @@ function pedirDatos(){
         })
         throw new Error(`Monto ingresado ${inversionUsuario.montoUSD} no es correcto.`)
     }
-        
-    //Cuarto validamos que periodo de tiempo este dentro de las opciones
     
     if ((inversionUsuario.periodoTiempo==="Semanal") || (inversionUsuario.periodoTiempo==="Bi-Semanal") || (inversionUsuario.periodoTiempo==="Mensual") ) {
     
@@ -124,8 +108,6 @@ function pedirDatos(){
 
         throw new Error(`El periodo de tiempo ingresado ${inversionUsuario.periodoTiempo} no es correcto.`)
     }
-   
-    //Quinto, validamos que la criptomoneda este dentro de las opciones
     
     if ((inversionUsuario.criptoOpcion==="BTC") || (inversionUsuario.criptoOpcion==="ETH") || (inversionUsuario.criptoOpcion==="ADA")){
     
@@ -137,13 +119,11 @@ function pedirDatos(){
         })
         throw new Error(`La inversion seleccionada ${inversionUsuario.criptoOpcion} no es correcta.`)
     }
-    
 }
 
-//Funcion que retorna el precio de BTC en una fecha en especifico
 function consultaPrecioActivo(fecha, activo){    
     if(activo=="BTC") {
-        if(fecha< new Date("07/18/2010")) { //Validamos si la fecha ingresada es anterior a la de disponibilidad de datos, sino lanzamos un error y cortamos la ejecucion 
+        if(fecha< new Date("07/18/2010")) {  
             Swal.fire({
                 icon:'error',
                 title:'No existe data historica',
@@ -155,7 +135,7 @@ function consultaPrecioActivo(fecha, activo){
             return buscarPrecio(fecha,"BTC")  
         }
     }else if(activo=="ETH") {
-        if(fecha< new Date("03/16/2016")) { //Same con ETH
+        if(fecha< new Date("03/16/2016")) { 
             Swal.fire({
                 icon:'error',
                 title:'No existe data historica',
@@ -166,7 +146,7 @@ function consultaPrecioActivo(fecha, activo){
             return buscarPrecio(fecha,"ETH")
         }
     }else if(activo=="ADA"){
-        if(fecha< new Date("12/31/2017")) { //Same con ADA
+        if(fecha< new Date("12/31/2017")) {
             Swal.fire({
                 icon:'error',
                 title:'No existe data historica',
@@ -181,7 +161,6 @@ function consultaPrecioActivo(fecha, activo){
     }
 }
 
-//Esta funcion va a calcular el DCA hasta hoy segun el monto de inversion, periodo de tiempo y fecha de inicio
 async function calcularInversion(fechainicial, fechafinal, monto, periodo, activo){
     let fechaActual=new Date(fechainicial)
     let valorDCACripto=0
@@ -194,40 +173,40 @@ async function calcularInversion(fechainicial, fechafinal, monto, periodo, activ
     await sleep(200)
 
     switch(periodo){
-        case "Semanal": //Si el DCA es semanal
-            while(fechaActual<fechafinal){ //Mientras la fecha de recorrida sea menor a la fecha de hoy, sigue recorriendo los arrays
-                valorDCACripto=valorDCACripto+(parseFloat(monto)/consultaPrecioActivo(fechaActual,activo)) //Suma el valor de BTC para calcularlo en el DCA
-                valorDCAUSD=valorDCAUSD+parseFloat(monto) //Suma el valor de USD para calcularlo en el DCA
+        case "Semanal": 
+            while(fechaActual<fechafinal){ 
+                valorDCACripto=valorDCACripto+(parseFloat(monto)/consultaPrecioActivo(fechaActual,activo)) 
+                valorDCAUSD=valorDCAUSD+parseFloat(monto) 
                 console.log(valorDCACripto)
-                fechaActual.setDate(fechaActual.getDate()+7) //Le agregamos 7 dias a la fecha
+                fechaActual.setDate(fechaActual.getDate()+7) 
                 
-                if(fechaActual>=fechafinal){ //Si en algun momento la fecha de recorrida supera o es igual a la fecha actual, salir del bucle
+                if(fechaActual>=fechafinal){
                     break
                 }
             }
             break;
-        case "Bi-Semanal": //Si el DCA es bi semanal
-            while(fechaActual<fechafinal){ //Mientras la fecha de recorrida sea menor a la fecha de hoy, sigue recorriendo los arrays
+        case "Bi-Semanal": 
+            while(fechaActual<fechafinal){ 
                 
-                valorDCACripto=valorDCACripto+(parseFloat(monto)/consultaPrecioActivo(fechaActual,activo)) //Suma el valor de BTC para calcularlo en el DCA
-                valorDCAUSD=valorDCAUSD+parseFloat(monto) //Suma el valor de USD para calcularlo en el DCA
+                valorDCACripto=valorDCACripto+(parseFloat(monto)/consultaPrecioActivo(fechaActual,activo)) 
+                valorDCAUSD=valorDCAUSD+parseFloat(monto) 
                             
-                fechaActual.setDate(fechaActual.getDate()+14) //Le agregamos 14 dias a la fecha
+                fechaActual.setDate(fechaActual.getDate()+14) 
             
-                if(fechaActual>=fechafinal){ //Si en algun momento la fecha de recorrida supera o es igual a la fecha actual, salir del bucle
+                if(fechaActual>=fechafinal){ 
                     break
                 }
             }
             break
-        case "Mensual": //Si el DCA es mensual
-            while(fechaActual<fechafinal){ //Mientras la fecha de recorrida sea menor a la fecha de hoy, sigue recorriendo los arrays
+        case "Mensual": 
+            while(fechaActual<fechafinal){ 
                     
-                valorDCACripto=valorDCACripto+(parseFloat(monto)/consultaPrecioActivo(fechaActual,activo)) //Suma el valor de BTC para calcularlo en el DCA
-                valorDCAUSD=valorDCAUSD+parseFloat(monto) //Suma el valor de USD para calcularlo en el DCA
+                valorDCACripto=valorDCACripto+(parseFloat(monto)/consultaPrecioActivo(fechaActual,activo)) 
+                valorDCAUSD=valorDCAUSD+parseFloat(monto)
                             
-                fechaActual.setDate(fechaActual.getDate()+30) //Le agregamos 14 dias a la fecha
+                fechaActual.setDate(fechaActual.getDate()+30) 
             
-                if(fechaActual>=fechafinal){ //Si en algun momento la fecha de recorrida supera o es igual a la fecha actual, salir del bucle
+                if(fechaActual>=fechafinal){ 
                     break
                 }
             
@@ -237,14 +216,12 @@ async function calcularInversion(fechainicial, fechafinal, monto, periodo, activ
         
         outputDCAHoy=valorDCACripto*consultaPrecioActivo(new Date(),activo)
     
-    //Mostrar resultados
     await sleep(200)
     console.log("quitando loading")
     $("body").removeClass("loading");
     mostrarResultados(fechainicial, fechafinal, monto, periodo, activo, valorDCAUSD, valorDCACripto, outputDCAHoy)
 }
 
-//Esta funcion mostrara los resultados, en principio en la consola pero eventualmente para el HTML
 function mostrarResultados(fechaInicio, fechaFin, montoUSD, periodoTiempo, criptoOpcion, outputUSD, outputCriptoDCA, outputDCAHoy){
     let ROI = ((outputDCAHoy - outputUSD)/outputUSD) * 100
 
@@ -253,7 +230,6 @@ function mostrarResultados(fechaInicio, fechaFin, montoUSD, periodoTiempo, cript
     outputFormCripto.innerHTML = `${outputCriptoDCA.toFixed(4)} ${criptoOpcion}`
     outputFormUSD.innerHTML = `${outputUSD.toFixed(2)} $`
    
-    //Guarda los ultimos resultados en el localstorage
     const historicoInversion = {
         inicio:fechaInicio,
         fin:fechaFin,
@@ -266,7 +242,6 @@ function mostrarResultados(fechaInicio, fechaFin, montoUSD, periodoTiempo, cript
     localStorage.setItem(Date.now(), JSON.stringify(historicoInversion))
 }
 
-//Al hacer click en Calcular inversion
 $("#formCalcularInversion").on('click', () => {
     inversionUsuario.fechaInicio=new Date(inputFormFechaInicio.value)
     inversionUsuario.fechaFin=new Date(inputFormFechaFin.value)
@@ -274,11 +249,9 @@ $("#formCalcularInversion").on('click', () => {
     inversionUsuario.periodoTiempo=inputFormPeriodo.value
     inversionUsuario.criptoOpcion=inputFormCripto.value
 
-    pedirDatos() //Para validar que los datos estan en el formulario y son correctos
-
+    pedirDatos()
 
     //Probamos que el acceso al API este correcto. Si esta OK, continuamos, sino, mandamos mensaje de error
-
     $.get(URL).done(function () {
         calcularInversion(inversionUsuario.fechaInicio,inversionUsuario.fechaFin,inversionUsuario.montoUSD,inversionUsuario.periodoTiempo,inversionUsuario.criptoOpcion)
       }).fail(function () {
@@ -288,10 +261,8 @@ $("#formCalcularInversion").on('click', () => {
             text:'Hubo un problema de conexión con el API de precios, por favor vuelva a intentarlo mas tarde.'
         })
       });
-
 })
 
-//Limpiar formulario
 $("#formReiniciarFormulario").on('click', ()  => {
     inputFormFechaInicio.value=""
     inputFormFechaFin.value=""
@@ -300,7 +271,6 @@ $("#formReiniciarFormulario").on('click', ()  => {
     inputFormCripto.value=inputFormCripto.firstElementChild.value
 })
 
-//Cargamos el historico de calculos de inversion solo si tiene algun registro historico luego de cada carga de pagina
 if(localStorage.length>0) {
     for (let i=0; i<localStorage.length;i++ ){
         let clave = localStorage.key(i)
