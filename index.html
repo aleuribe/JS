@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Costo Promedio en Dolares para Cripto Inversiones (ProDCI)</title>
+    <title>Calculadora de Costo Promedio en Dólares para Cripto Inversiones (ProDCI)</title>
 
     <!-- Incluyendo el CSS para los adornos de la pagina-->
     <link rel="stylesheet" href="styles/styles.css">
@@ -15,6 +15,9 @@
 
     <!-- Inclujendo jQuery a la pagina-->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+    <!-- Importando SweetAlert-->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"> </script>
 
 </head>
 <body>
@@ -42,7 +45,7 @@
         <div class="container">
           <div class="row p-5"> <!--Fila 0-->
 
-            <H1>Calculadora de Costo Promedio en Dolares para Cripto Inversiones</H1>
+            <H1>Calculadora de Costo Promedio en Dólares para Cripto Inversiones</H1>
           </div>
 
           <div class="row"> <!--Fila 1-->
@@ -62,7 +65,7 @@
 
                     <!--3. Monto periodico en dolares-->
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="inputGroup-sizing-default">Monto en Dolares</span>
+                        <span class="input-group-text" id="inputGroup-sizing-default">Monto en Dólares</span>
                         <input type="text" id="formMontoUSD" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                     </div>
 
@@ -82,7 +85,7 @@
                     <div class="input-group mb-3">
                         <label class="input-group-text" for="inputGroupSelect01">Criptomoneda</label>
                         <select id="formCripto" class="form-select" id="inputGroupSelect01">
-                          <option selected>Seleccione una opcion...</option>
+                          <option selected>Seleccione una opción...</option>
                           <option value="BTC">Bitcoin</option>
                           <option value="ETH">Ethereum</option>
                           <option value="ADA">Cardano</option>
@@ -95,7 +98,7 @@
             <div class="row p-2"> <!--Fila 2-->
               <div class="col-sm p-1">
                 <div class="d-grid gap-2 col-6 mx-auto">
-                  <button type="button" id="formCalcularInversion" class="btn btn-primary btn-lg">Calcular Inversion</button>
+                  <button type="button" id="formCalcularInversion" class="btn btn-primary btn-lg">Calcular Inversión</button>
                 </div>
               </div>
               <div class="col-sm p-1">
@@ -109,7 +112,7 @@
               <div class="col-sm">
                  <div class="alert alert-info" role="alert">
                     <h4 class="alert-heading">ROI!</h4>
-                    <p>Retorno de inversion estimado</p>
+                    <p>Retorno de inversión estimado</p>
                     <hr>
                     <p class="mb-0" id="formOutputROI"></p>
                   </div>
@@ -118,7 +121,7 @@
               <div class="col-sm">
                 <div class="alert alert-success" role="alert">
                   <h4 class="alert-heading">DCA!</h4>
-                  <p>Dolares que tendrias en fecha fin</p>
+                  <p>Dólares que tendrias en fecha fin</p>
                   <hr>
                   <p class="mb-0" id="formOutputDCA"></p>
                 </div>
@@ -136,7 +139,7 @@
               <div class="col-sm">
                 <div class="alert alert-danger" role="alert">
                   <h4 class="alert-heading">USD!</h4>
-                  <p>Cantidad de dolares USD invertidos</p>
+                  <p>Cantidad de dólares USD invertidos</p>
                   <hr>
                   <p class="mb-0" id="formOutputUSD"></p>
                 </div>
@@ -157,7 +160,7 @@
               </svg>
               
               <div class="alert alert-secondary" role="alert">
-                Ultimos calculos de inversion realizados se mostraran a continuacion:
+                Ultimos calculos de inversión realizados se mostraran a continuación:
               </div>
 
               <div id="calculoHistorico"></div>
@@ -179,8 +182,10 @@
       </svg>
   </div>
 
-  <div class="modal"><!-- Place at bottom of page --></div>
-    <script src="js/main.js"></script>
+  <!-- Div que define el spinner -->
+  <div class="modal"></div>
 
+  <!-- Importando el JavaScript del proyecto-->
+  <script src="js/main.js"></script>
 </body>
 </html>
