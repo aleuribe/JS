@@ -45,7 +45,7 @@ Luego se llama a la función
 
 En la cual se termina de calcular el ROI (Return of Investment) y se imprimen los resultados en pantalla modificando el DOM.
 
-###Salida:
+### Salida:
 Se muestra al usuario:
 1. **ROI**: retorno de inversión que se calcula como 
 ```(Ganancia-Inversión)/Inversión * 100%```
